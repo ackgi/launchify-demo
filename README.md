@@ -10,11 +10,8 @@ APIを「登録する・売る・使う」を一元的に実現します。
 ---
 
 ## 👤 デモアカウント
-| ロール | メールアドレス | パスワード |
-|--------|----------------|-------------|
-| クリエイター | creator@example.com | launchify123 |
-| バイヤー | buyer@example.com | launchify123 |
-
+ Email: demo@example.com   
+ Password: launchify_demo123 
 ---
 
 ## 📋 概要

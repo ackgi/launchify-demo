@@ -3,10 +3,9 @@ import { supabaseAdmin } from "@/lib/supabase/admin";
 import EndpointForm from "../../new/EndpointForm";
 import { Card, CardContent, CardHeader } from "@/app/components/ui/Card";
 
-type PageProps = { params: { endpointId: string } };
-
-// ✅ Promise<PageProps> → PageProps に修正
-export default async function EditEndpointPage({ params }: PageProps) {
+export default async function EditEndpointPage({
+  params,
+}: { params: { endpointId: string } }) {
   const endpointId = params.endpointId;
 
   const [{ data: endpoint, error: endpointError }, { data: plans }, { data: groups }] =

@@ -1,7 +1,7 @@
 // src/app/creator/plans/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { createBrowserClient } from "@/lib/supabase/client";
@@ -29,6 +29,7 @@ export default function PlansIndexPage() {
   const [rows, setRows] = useState<PlanRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [q, setQ] = useState(""); // 🔍 検索用ステートを追加
 
   // Supabase クライアント生成（Clerk JWT付き）
   useEffect(() => {
@@ -104,6 +105,16 @@ export default function PlansIndexPage() {
     }
   };
 
+  // 🔍 検索ロジック
+  const filtered = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    if (!needle) return rows;
+    return rows.filter((r) => {
+      const hay = `${r.plan_name ?? ""} ${r.status ?? ""}`.toLowerCase();
+      return hay.includes(needle);
+    });
+  }, [rows, q]);
+
   if (loading) {
     return <div className="text-center py-16 text-gray-500">Loading plans…</div>;
   }
@@ -121,8 +132,24 @@ export default function PlansIndexPage() {
         </Button>
       </div>
 
+      {/* 🔍 Search */}
+      <div className="flex items-center gap-3">
+        <label htmlFor="planSearch" className="sr-only">
+          Search plans
+        </label>
+        <input
+          id="planSearch"
+          name="search"
+          type="search"
+          placeholder="Search plans…"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          className="w-full max-w-md border border-gray-300 rounded-lg px-3 py-2"
+        />
+      </div>
+
       {/* Empty state */}
-      {rows.length === 0 ? (
+      {filtered.length === 0 ? (
         <Card className="rounded-2xl">
           <CardContent className="py-20 text-center text-gray-600">
             <div className="text-lg font-medium mb-2">No Plans Yet</div>
@@ -145,11 +172,10 @@ export default function PlansIndexPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map((p) => (
+                  {filtered.map((p) => (
                     <tr key={p.id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="py-4 px-6 font-medium text-gray-900">
                         {p.plan_name ?? "—"}
-                        {/* 👇 内部IDの表示削除（完全非表示） */}
                       </td>
                       {/* product_idも内部IDなので表示しない */}
                       <td className="py-4 px-6">—</td>

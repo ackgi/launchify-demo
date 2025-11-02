@@ -149,13 +149,10 @@ export default function PlansIndexPage() {
                     <tr key={p.id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="py-4 px-6 font-medium text-gray-900">
                         {p.plan_name ?? "—"}
-                        {p.created_by && (
-                          <span className="text-xs text-gray-400 ml-2">
-                            ({p.created_by})
-                          </span>
-                        )}
+                        {/* 👇 内部IDの表示削除（完全非表示） */}
                       </td>
-                      <td className="py-4 px-6">{p.product_id ?? "—"}</td>
+                      {/* product_idも内部IDなので表示しない */}
+                      <td className="py-4 px-6">—</td>
                       <td className="py-4 px-6">
                         {p.unit_price != null
                           ? `$${p.unit_price.toFixed(2)}/unit`

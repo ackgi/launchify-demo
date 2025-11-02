@@ -2,9 +2,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-// import Link from "next/link"; // ← 不要
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Loader2, ExternalLink } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 
 import { Card, CardContent, CardHeader } from "@/app/components/ui/Card";
 import { Button } from "@/app/components/ui/Button";
@@ -42,7 +41,6 @@ export default function CreatorProductsPage() {
   const [dbError, setDbError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  // 検索（a11y: label あり）
   const [q, setQ] = useState("");
 
   const statusBadge = useMemo(
@@ -116,8 +114,7 @@ export default function CreatorProductsPage() {
     const needle = q.trim().toLowerCase();
     if (!needle) return rows;
     return rows.filter((r) => {
-      const hay =
-        `${r.name} ${r.slug ?? ""} ${r.category ?? ""} ${r.status} ${r.visibility}`.toLowerCase();
+      const hay = `${r.name} ${r.category ?? ""} ${r.status} ${r.visibility}`.toLowerCase();
       return hay.includes(needle);
     });
   }, [rows, q]);
@@ -189,11 +186,21 @@ export default function CreatorProductsPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Visibility</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Endpoint</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Product
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Visibility
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Endpoint
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 bg-white">
@@ -213,9 +220,7 @@ export default function CreatorProductsPage() {
                           )}
                           <div>
                             <div className="font-medium text-gray-900">{r.name}</div>
-                            <div className="text-xs text-gray-500">
-                              {r.slug ? `/buyer/products/${r.slug}` : "—"}
-                            </div>
+                            {/* 👇 slugリンクや内部URL表示を完全削除 */}
                           </div>
                         </div>
                       </td>
@@ -235,16 +240,9 @@ export default function CreatorProductsPage() {
                       {/* Endpoint */}
                       <td className="px-6 py-4">
                         {r.service_endpoint_url ? (
-                          <a
-                            className="inline-flex items-center gap-1 text-blue-600 hover:underline"
-                            href={r.service_endpoint_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            title={r.service_endpoint_url}
-                          >
+                          <span className="text-gray-700 text-sm">
                             {new URL(r.service_endpoint_url).host}
-                            <ExternalLink size={14} />
-                          </a>
+                          </span>
                         ) : (
                           <span className="text-gray-400">—</span>
                         )}

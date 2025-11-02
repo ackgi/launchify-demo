@@ -1,4 +1,3 @@
-//src\app\creator\page.tsx
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -148,7 +147,6 @@ export default function CreatorDashboard() {
     const { error } = await supabase.from("api_endpoint_groups").delete().eq("id", group.id);
 
     if (error) {
-      // 失敗時はロールバックしてエラーメッセージ
       setGroups(snapshot);
       setErrorMsg("Failed to delete group.");
     }
@@ -238,8 +236,8 @@ export default function CreatorDashboard() {
                           />
                           <div>
                             <h3 className="font-medium text-gray-900">
-                              {p.name ?? "(untitled)"}{" "}
-                              <span className="text-xs text-gray-500">({p.created_by})</span>
+                              {p.name ?? "(untitled)"}
+                              {/* 👇 userID表示削除（完全非表示） */}
                             </h3>
                             {p.description && (
                               <p className="text-sm text-gray-500 truncate max-w-xs">
@@ -308,8 +306,8 @@ export default function CreatorDashboard() {
                     return (
                       <tr key={pl.id} className="border-b border-gray-100 hover:bg-gray-50">
                         <td className="py-4 px-4 font-medium text-gray-900">
-                          {pl.plan_name}{" "}
-                          <span className="text-xs text-gray-500">({pl.created_by})</span>
+                          {pl.plan_name ?? "(untitled)"}
+                          {/* 👇 userID表示削除（完全非表示） */}
                         </td>
                         <td className="py-4 px-4">{prod?.name ?? "—"}</td>
                         <td className="py-4 px-4">{formatPrice(pl.unit_price)}</td>
